@@ -33,6 +33,12 @@ Snow Water Equivalent (SWE) is a common snowpack measurement used by hydrologist
 
 ## Future Work
 
+**1. Explore Time-Series to forecast SWE at SNOTEL and CDEC stations**
+
+**2. Incorporate data from satellite imageries**
+
+**3. Use near Real-time data to predict SWE**
+
 ## Repository Structure
   ```
 ├── data  
