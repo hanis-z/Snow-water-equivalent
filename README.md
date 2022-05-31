@@ -33,9 +33,11 @@ The satellite imageries from MODIS were not used for modelling due to contraints
 ### Notebooks in this repo
 [MODIS-DEM-Preprocessing_colab.ipynb](./src/MODIS-DEM-Preprocessing_colab.ipynb) - This notebook details the process of pulling down MODIS satellite imageries from Azure blob and save them as numpy arrays of pixels.
 
-[Data-Preprocessing.ipynb](./src/Data-Preprocessing.ipynb) - This notebook is where the data processing of ground measures data into model features. It then saves the resulting dataframe for modeling.
+[MODIS-Preprocessing.ipynb](./src/MODIS-Preprocessing.ipynb) - This notebook details the same process as the above notebook but for local machines and using conda environment. The environment to run this notebook is provided in the repo [here](modis.yml).
 
-[Modeling.ipynb](./src/Modeling.ipynb) - This notebook contains dummy model, linear regression and 3 different types of Gradient Boosting models trained on the data saved at the end of Data-preprocessing notebook. This notebook also contains model evaluations and comparisons.
+[Data-Preprocessing.ipynb](./src/Data-Preprocessing.ipynb) - This notebook is where the data processing of ground measures data into model features. It then saves the resulting dataframe for modeling. The environment to run this notebook is provided in the repo [here](geo_env.yml).
+
+[Modeling.ipynb](./src/Modeling.ipynb) - This notebook contains dummy model, linear regression and 3 different types of Gradient Boosting models trained on the data saved at the end of Data-preprocessing notebook. This notebook also contains model evaluations and comparisons. The environment to run this notebook is provided in the repo [here](geo_env.yml).
 
 ## Modeling & Results
 
@@ -51,7 +53,9 @@ The satellite imageries from MODIS were not used for modelling due to contraints
 
 ![model performance](./figures/model_performance.jpeg)
 
-## Future Work
+## Conclusion 
+
+### Future Work
 
 **1. Explore Time-Series to forecast SWE at SNOTEL and CDEC stations**
 
