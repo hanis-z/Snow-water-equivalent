@@ -17,7 +17,7 @@ This project budded from a competition titled [Snowcast Showdown](https://www.dr
 Snow Water Equivalent (SWE) is a common snowpack measurement used by hydrologists and water managers to gage amount of liquid water contained within snowpack. It is equal to the amount of water contained within the snowpack when it melts. It can be thought of as the depth of water that would theoretically result if you melted the entire snowpack instantaneously [[1]](#1).  
 
 ## Data Understanding
-**Ground Measures data:** Ground measures help provide regularly collected, highly accurate point estimates of SWE at designated stations. The ground measures data are from [Snow Telemetry (SNOTEL)](https://www.nrcs.usda.gov/wps/portal/wcc/home/) and [California Data Exchange Center (CDEC)](https://cdec.water.ca.gov/). The dataset used from these sources is available in this repo [here](./data/).
+**Historical Ground Measures data:** Ground measures help provide regularly collected, highly accurate point estimates of SWE at designated stations. Ground measures data range from 2013-2019 and 2020-2021 was provided in [ground_measures_train_features.csv](./data/ground_measures_train_features.csv) and [ground_measures_test_features.csv](./data/ground_measures_test_features.csv). The ground measures data are from [Snow Telemetry (SNOTEL)](https://www.nrcs.usda.gov/wps/portal/wcc/home/) and [California Data Exchange Center (CDEC)](https://cdec.water.ca.gov/). The dataset used from these sources is available in this repo [here](./data/).
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;***[SNOTEL](https://www.nrcs.usda.gov/wps/portal/wcc/home/):*** The Snow Telemetry (SNOTEL) program consists of automated and semi-automated data collection sites across the Western U.S.
 
@@ -33,17 +33,30 @@ The satellite imageries from MODIS were not used for modelling due to contraints
 ### Notebooks in this repo
 [MODIS-DEM-Preprocessing_colab.ipynb](./src/MODIS-DEM-Preprocessing_colab.ipynb) - This notebook details the process of pulling down MODIS satellite imageries from Azure blob and save them as numpy arrays of pixels.
 
-[MODIS-Preprocessing.ipynb](./src/MODIS-Preprocessing.ipynb) - This notebook details the same process as the above notebook but for local machines and using conda environment. The environment to run this notebook is provided in the repo [here](modis.yml).
+[MODIS-Preprocessing.ipynb](./src/MODIS-Preprocessing.ipynb) - This notebook details the same process as the above notebook but for local machines and using conda environment. The environment to run this notebook is provided in the repo [here](modis.yml). **However,** this notebook wasn't executed to completion due to restraints on computational memory on my local machine.
 
-[Data-Preprocessing.ipynb](./src/Data-Preprocessing.ipynb) - This notebook is where the data processing of ground measures data into model features. It then saves the resulting dataframe for modeling. The environment to run this notebook is provided in the repo [here](geo_env.yml).
+[Data-Preprocessing.ipynb](./src/Data-Preprocessing.ipynb) - This notebook is where the data processing of ground measures data into model features was done. It then saves the resulting dataframe for modeling. The environment to run this notebook is provided in the repo [here](geo_env.yml).
 
-[Modeling.ipynb](./src/Modeling.ipynb) - This notebook contains dummy model, linear regression and 3 different types of Gradient Boosting models trained on the data saved at the end of Data-preprocessing notebook. This notebook also contains model evaluations and comparisons. The environment to run this notebook is provided in the repo [here](geo_env.yml).
+[EDA.ipynb](./src/EDA.ipynb) - This notebook contains time series data exploration of 
+
+[Modeling.ipynb](./src/Modeling.ipynb) - This notebook contains dummy model, linear regression and 3 different types of Gradient Boosting models trained on the data saved at the end of Data-preprocessing notebook. This notebook also contains model evaluations and comparisons. The environment to run this notebook is provided in the repo [here](geo_env.yml). It is the same environment used for Data Processing notebook.
 
 ## Modeling & Results
 
-### Model Features (predictors)
-
 ### Model Target (predicted)
+Our model is predicting snow water equivalent (SWE) measures for 2013-2021 for [1km x 1km grid cells](./data/grid_cells.geojson). For model training, we SWE values for 2013-2019 were provided in [train_labels.csv](./data/train_labels.csv). For model evalutation, data for 2020-2021 is in [labels_2020_2021.csv](./data/labels_2020_2021.csv). 
+
+### Model Features (predictors)
+***1. Ground measures Data (SNOTEL and CDEC)***
+
+SWE values of the top 20 nearest (by distance) ground measure stations to the grid cell were used as model features.
+ 
+***2. Geo-spatial features***
+
+- Latitude
+- Longitude
+- Region type
+
 
 ### Model Comparison
 
@@ -62,26 +75,39 @@ The satellite imageries from MODIS were not used for modelling due to contraints
 **2. Exploration of feature engineering**
   - Use historical mean for SWE? capture trends 
   - Data from snow day ? capture season
+  - geospatial data
 
-**3. Incorporate data from satellite imageries**
+**3. Incorporate data from satellite imageries & remote sensing data**
+  - Include Satellite imageries
+  - Climate data
+  - DEM 
+  - MODIS Terra/Aqua Data 
+mean and variance of pixel values over an entire grid cell.
+Eliminate Modis data for a grid cell on days with high cloud cover (data becomes sparse)
+5-day Rolling average of the mean pixel values
+15-day Rolling average of the mean pixel values
+DEM
+Mean and variance of pixel values over an entire grid cell.
+HRRR Climate Data
 
-
-**3. Use near Real-time data to predict SWE**
-  - Make a d dashboard of predictions and forecast?
+**4. Use near Real-time data to predict SWE**
+  - Make a dashboard of predictions and forecast? Note that this means you may use approved data from both training and test periods from Stage 1 as training data for Stage 2 submissions. You will then use your model to make weekly predictions for 2022 for the grid cells identified in submission_format.csv.
 
 ## Repository Structure
   ```
 ├── data  
-├── images
+├── figures
+├── models
 ├── src 
 │       ├── catboost_info
 │       ├── Data-Preprocessing.ipynb
+│       ├── EDA.ipynb
 │       ├── MODIS-DEM_Preprocessing_colab.ipynb
 │       ├── MODIS-Preprocessing.ipynb
-│       ├── Modeling.ipynb
-│       └── EDA.ipynb
+│       └── Modeling.ipynb
 │
 ├── .gitignore
+├── geo_env.yml
 ├── LICENSE
 ├── README.md
 └── modis.yml 
