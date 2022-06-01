@@ -1,5 +1,5 @@
 # Predicting Snow Water Equivalent in regions in Western United States
-**Estimating snow water equivalent (SWE) at a high spatiotemporal resolution over the Western U.S. using near real-time data sources**
+**Estimating snow water equivalent (SWE) at a high spatiotemporal resolution over the Western U.S.**
 
 **Author**: Hanis Zulmuthi
 
@@ -11,12 +11,17 @@ Source: [Reddit.com](https://www.reddit.com/r/EarthPorn/comments/a6ewla/snow_and
 
 
 ## Overview
-This project budded from a competition titled [Snowcast Showdown](https://www.drivendata.org/competitions/90/competition-reclamation-snow-water-eval/page/431/) on [Driven Data](https://www.drivendata.org/). The goal of the project is to develop a predictive model to estimate the distribution of Snow Water Equivalent (SWE) at a high spatiotemporal resolution over the Western U.S. using near real-time data sources.
+This project budded from a competition titled [Snowcast Showdown](https://www.drivendata.org/competitions/90/competition-reclamation-snow-water-eval/page/431/) on [Driven Data](https://www.drivendata.org/). The goal of the project is to develop a predictive model to estimate the distribution of Snow Water Equivalent (SWE)  at a high spatiotemporal resolution over the Western U.S.
 
 ## Introduction
 Snow Water Equivalent (SWE) is a common snowpack measurement used by hydrologists and water managers to gage amount of liquid water contained within snowpack. It is equal to the amount of water contained within the snowpack when it melts. It can be thought of as the depth of water that would theoretically result if you melted the entire snowpack instantaneously [[1]](#1).  
 
-Snow water reservoir is one of the main sources 
+Water in a snow pack is determined by depth, density, type of snow, changes in the pack, previous freeze/thaw cycles, recent rainfall events, etc.  Available water is the amount of water that would be released if the snow pack melted.  SWE is an important measure of availability of water resources, since it relates to the runoff of rivers and variations in groundwater levels, so knowing how much water is available in the snow pack is valuable for those managing reservoirs and flood forecasting [[2]](#2)[[3]](#3).
+
+[Reports](https://www.drought.gov/drought-status-updates/water-year-2021-snow-drought-conditions-summary-and-impacts-west) by [National Integrated Drought Information System (NIDIS)](https://www.drought.gov/) on the intensifying snow drought over western U.S raises the alarm on the importance of predicting SWE as accurately possible, especially for remote, high elevation areas where manual ground measure measurements are not feasible. It was reported that the loww snowpack, rapid and early snow melts and poor runoffs had resulted in a significant drop in water supply in the summer of 2021 (fig 1).
+
+![water-reservoir](reservoir-storage-may-1-2021.jpeg)
+Source: [NIDIS, Drought.gov](https://www.drought.gov/drought-status-updates/water-year-2021-snow-drought-conditions-summary-and-impacts-west)
 
 ## Data Understanding
 **Historical Ground Measures data:** Ground measures help provide regularly collected, highly accurate point estimates of SWE at designated stations. Ground measures data range from 2013-2019 and 2020-2021 was provided in [ground_measures_train_features.csv](./data/ground_measures_train_features.csv) and [ground_measures_test_features.csv](./data/ground_measures_test_features.csv). The ground measures data are from [Snow Telemetry (SNOTEL)](https://www.nrcs.usda.gov/wps/portal/wcc/home/) and [California Data Exchange Center (CDEC)](https://cdec.water.ca.gov/). The dataset used from these sources is available in this repo [here](./data/).
@@ -88,26 +93,22 @@ We can see that our model with the input features wasn't able to capture the var
 
 **1. Explore Time-Series to forecast SWE at SNOTEL and CDEC stations**
 
+On top of predicting SWE at the location of grid cells, it would be highly valuable to conduct a time series analysis of SWE at SNOTEL and CDEC (ground measure) stations and furthermore, to be able to forecast SWE at these locations. 
+
 **2. Exploration of feature engineering**
-  - Use historical mean for SWE? capture trends 
-  - Data from snow day ? capture season
-  - geospatial data
+  
+  As observed from our model performance, our model could do better with more features that are engineered. Some possibilities include:
+  - Using historical mean of SWE and SWE relative to historical mean. This could possibly capture long term trends in the region. 
+  - Calculate the snow day at which the observation was measured. This could help capture seasonal trends in our data.
 
 **3. Incorporate data from satellite imageries & remote sensing data**
-  - Include Satellite imageries
+  - Satellite imageries (MODIS Terra/Aqua Data)
   - Climate data
   - DEM 
-  - MODIS Terra/Aqua Data 
-mean and variance of pixel values over an entire grid cell.
-Eliminate Modis data for a grid cell on days with high cloud cover (data becomes sparse)
-5-day Rolling average of the mean pixel values
-15-day Rolling average of the mean pixel values
-DEM
-Mean and variance of pixel values over an entire grid cell.
-HRRR Climate Data
+The model could've beneffited just from the mean and variance of pixel values over an entire grid cell for the satellite imageris (MODIS and DEM).
 
 **4. Use near Real-time data to predict SWE**
-  - Make a dashboard of predictions and forecast? Note that this means you may use approved data from both training and test periods from Stage 1 as training data for Stage 2 submissions. You will then use your model to make weekly predictions for 2022 for the grid cells identified in submission_format.csv.
+  Make a dashboard of predictions and forecast with streams of near real-time data
 
 ## Repository Structure
   ```
@@ -133,3 +134,11 @@ HRRR Climate Data
 <a id="1">[1]</a> 
 What is SWE?
 (Natural Resources Conservation Service Nevada, [USDA](https://www.nrcs.usda.gov/wps/portal/nrcs/detail/nv/snow/?cid=nrcseprd1746821#:~:text=Snow%20Water%20Equivalent%20(SWE)%20is,the%20snowpack%20when%20it%20melts.))
+
+<a id="2">[2]</a> 
+Snow Water Equivalent (SWE) Measurement Systems
+([Campbell Scientific](https://www.campbellsci.ca/snow-water-equivalent-measurement))
+
+<a id="3">[3]</a> 
+Climatology of snow cover and snow water equivalent
+([Eumetrain.org](http://www.eumetrain.org/data/3/358/navmenu.php?tab=7&page=1.0.0#:~:text=Climatology%20of%20snow%20cover%20and%20snow%20water%20equivalent,-Table%20of%20Contents&text=SWE%20is%20an%20important%20measure,the%20age%20of%20snow%20cover.))
