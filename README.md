@@ -39,26 +39,32 @@ The satellite imageries from MODIS were not used for modelling due to contraints
 
 
 ### Notebooks in this repo
-[MODIS-DEM-Preprocessing_colab.ipynb](./src/MODIS-DEM-Preprocessing_colab.ipynb) - This notebook details the process of pulling down MODIS satellite imageries from Azure blob and save them as numpy arrays of pixels.
+[MODIS-DEM-Preprocessing_colab(01.1).ipynb](./src/MODIS-DEM-Preprocessing_colab(01.1).ipynb) - This notebook details the process of pulling down MODIS satellite imageries from Azure blob and save them as numpy arrays of pixels.
 
-[MODIS-Preprocessing.ipynb](./src/MODIS-Preprocessing.ipynb) - This notebook details the same process as the above notebook but for local machines and using conda environment. The environment to run this notebook is provided in the repo [here](modis.yml). **However,** this notebook wasn't executed to completion due to restraints on computational memory on my local machine.
+[MODIS-Preprocessing(01.2).ipynb](./src/MODIS-Preprocessing(01.2).ipynb) - This notebook details the same process as the above notebook but for local machines and using conda environment. The environment to run this notebook is provided in the repo [here](modis.yml). **However,** this notebook wasn't executed to completion due to restraints on computational memory on my local machine.
 
-[Data-Preprocessing.ipynb](./src/Data-Preprocessing.ipynb) - This notebook is where the data processing of ground measures data into model features was done. It then saves the resulting dataframe for modeling. The environment to run this notebook is provided in the repo [here](geo_env.yml).
+[Data-Preprocessing-EDA(02).ipynb](./src/Data-Preprocessing-EDA(02).ipynb) - This notebook is where the data processing of ground measures data into model features was done. It then saves the resulting dataframe for modeling. The environment to run this notebook is provided in the repo [here](geo_env.yml).
 
-[EDA.ipynb](./src/EDA.ipynb) - This notebook contains time series data exploration of 
+[Time-Series-EDA(03).ipynb](./src/Time-Series-EDA(03).ipynb) - This notebook contains time series data exploration of the ground measure SNOTEC and CDEC stations. 
 
-[Modeling.ipynb](./src/Modeling.ipynb) - This notebook contains dummy model, linear regression and 3 different types of Gradient Boosting models trained on the data saved at the end of Data-preprocessing notebook. This notebook also contains model evaluations and comparisons. The environment to run this notebook is provided in the repo [here](geo_env.yml). It is the same environment used for Data Processing notebook.
+[Modeling(04).ipynb](./src/Modeling(04).ipynb) - This notebook contains dummy model, linear regression and 3 different types of Gradient Boosting models trained on the data saved at the end of Data-preprocessing notebook. This notebook also contains model evaluations and comparisons. The environment to run this notebook is provided in the repo [here](geo_env.yml). It is the same environment used for Data Processing notebook.
 
 ## Modeling & Results
 
 ### Model Target (predicted)
-Our model is predicting snow water equivalent (SWE) measures for 2013-2021 for [1km x 1km grid cells](./data/grid_cells.geojson). For model training, we SWE values for 2013-2019 were provided in [train_labels.csv](./data/train_labels.csv). For model evalutation, data for 2020-2021 is in [labels_2020_2021.csv](./data/labels_2020_2021.csv). 
+Our model is predicting snow water equivalent (SWE) measures for 2013-2021 for [1km x 1km grid cells](./data/grid_cells.geojson). For model training, we SWE values for 2013-2019 were provided in [train_labels.csv](./data/train_labels.csv). For model evalutation, data for 2020-2021 is in [labels_2020_2021.csv](./data/labels_2020_2021.csv).
+
+![model-target](./figures/gridcell.jpg)
+The purple grids are a sample of 1km x 1km grid cells in mountains of Colorado, US. The scatter markers are SNOTEC and CDEC stations colored by the historical mean of their SWE.
 
 ### Model Features (predictors)
 ***1. Ground measures Data (SNOTEL and CDEC)***
 
 SWE values of the top 20 nearest (by distance) ground measure stations to the grid cell were used as model features.
- 
+
+![model-inputs](./figures/groundmeasure.jpg)
+Scatter plot of SNOTEC and CDEC stations colored by the historical mean of their SWE. Size of markers represent elevation of those stations.
+
 ***2. Geo-spatial features***
 
 - Latitude
