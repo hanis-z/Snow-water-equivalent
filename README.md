@@ -21,6 +21,7 @@ Water in a snow pack is determined by depth, density, type of snow, changes in t
 [Reports](https://www.drought.gov/drought-status-updates/water-year-2021-snow-drought-conditions-summary-and-impacts-west) by [National Integrated Drought Information System (NIDIS)](https://www.drought.gov/) on the intensifying snow drought over western U.S raises the alarm on the importance of predicting SWE as accurately possible, especially for remote, high elevation areas where manual ground measure measurements are not feasible. It was reported that the loww snowpack, rapid and early snow melts and poor runoffs had resulted in a significant drop in water supply in the summer of 2021 (fig 1).
 
 ![water-reservoir](./figures/reservoir-storage-may-1-2021.jpeg)
+
 Source: [NIDIS, Drought.gov](https://www.drought.gov/drought-status-updates/water-year-2021-snow-drought-conditions-summary-and-impacts-west)
 
 ## Data Understanding
