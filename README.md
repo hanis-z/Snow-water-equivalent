@@ -16,6 +16,8 @@ This project budded from a competition titled [Snowcast Showdown](https://www.dr
 ## Introduction
 Snow Water Equivalent (SWE) is a common snowpack measurement used by hydrologists and water managers to gage amount of liquid water contained within snowpack. It is equal to the amount of water contained within the snowpack when it melts. It can be thought of as the depth of water that would theoretically result if you melted the entire snowpack instantaneously [[1]](#1).  
 
+Snow water reservoir is one of the main sources 
+
 ## Data Understanding
 **Historical Ground Measures data:** Ground measures help provide regularly collected, highly accurate point estimates of SWE at designated stations. Ground measures data range from 2013-2019 and 2020-2021 was provided in [ground_measures_train_features.csv](./data/ground_measures_train_features.csv) and [ground_measures_test_features.csv](./data/ground_measures_test_features.csv). The ground measures data are from [Snow Telemetry (SNOTEL)](https://www.nrcs.usda.gov/wps/portal/wcc/home/) and [California Data Exchange Center (CDEC)](https://cdec.water.ca.gov/). The dataset used from these sources is available in this repo [here](./data/).
 
@@ -59,12 +61,26 @@ SWE values of the top 20 nearest (by distance) ground measure stations to the gr
 
 
 ### Model Comparison
+We started off with our first simple model that returned an R2 of 0.09730. This will be our baseline, and yes, it's a pretty low baseline. Our subsequent models manage to beat the R2 of our first simple models as follows:
 
 ![r2](./figures/r2.jpeg)
 
+All models except CatBoost Regressor with the parameters Hypertune were ran using default parameters. The R2 is the mean of cross-validations R2. As seen in the figure above, our best model is a Catboost Regressor. The hypertuned CatBoost only improved by a mere 0.05. With all the models being around the same R2 range, it tells that the way to improve our R2 is to include more features that are more descriptive of the geolocation of the grid cell regions themselves and features that have influence on the yearly snow packs. And these features could be temperature, precipitation, elevation and satellite images.
+
 ### Best Model
+#### CatBoost Regressor with hypertuned parameters
+To reiterate, our best model is our CatBoost Regressor with some hypertuning. It gave a R2 value of 0.3977, the highest out of 5 and an RMSE of 6.57. For reference, an ideal RMSE would be in the range of 1-3. The best parameter setting that resulted in this R2 value is: 
+```
+{'catboost__depth': 10,
+ 'catboost__learning_rate': 0.1,
+ 'catboost__min_data_in_leaf': 10,
+ 'catboost__n_estimators': 100}
+ ```
+ The figure below is a visualization of our best model's performance.
 
 ![model performance](./figures/model_performance.jpeg)
+
+We can see that our model with the input features wasn't able to capture the variation of SWE.
 
 ## Conclusion 
 
