@@ -1,5 +1,7 @@
 #Ignore folders
 sat_images
+src/mapbox_access_token.txt
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
