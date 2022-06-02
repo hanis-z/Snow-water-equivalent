@@ -94,6 +94,13 @@ To reiterate, our best model is our CatBoost Regressor with some hypertuning. It
 
 We can see that our model with the input features wasn't able to capture the variation of SWE.
 
+## Feature Importance 
+Tehe figure below shows which of our Model features are the most important.
+
+![feature_importance](./figures/feat_imp.jpeg)
+
+It is no surprise that the most important features is latitude and longitude since these two features are the only features that are **direct** geospatial features of our grid cells. This further emphasizes how beneficial it would be to incorporate satellite imagery, elevation and climate data as part of our model features to improve our R2 and RMSE since the thickness of snow packs at any given time depend on these climatological and geospatial features at those grid cells.
+
 ## Conclusion 
 
 ### Future Work
