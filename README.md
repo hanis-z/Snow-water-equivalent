@@ -45,7 +45,7 @@ The satellite imageries from MODIS were not used for modelling due to contraints
 
 [Data-Preprocessing-EDA(02).ipynb](./src/Data-Preprocessing-EDA(02).ipynb) - This notebook is where the data processing of ground measures data into model features was done. It then saves the resulting dataframe for modeling. The environment to run this notebook is provided in the repo [here](geo_env.yml).
 
-[Time-Series-EDA(03).ipynb](./src/Time-Series-EDA(03).ipynb) - This notebook contains time series data exploration of the ground measure SNOTEC and CDEC stations. 
+[Time-Series-EDA(03).ipynb](./src/Time-Series-EDA(03).ipynb) - This notebook contains time series data exploration of the ground measure SNOTEC and CDEC stations. This notebook is incomplete and does not provide any additional insights to our modeling workflow.
 
 [Modeling(04).ipynb](./src/Modeling(04).ipynb) - This notebook contains dummy model, linear regression and 3 different types of Gradient Boosting models trained on the data saved at the end of Data-preprocessing notebook. This notebook also contains model evaluations and comparisons. The environment to run this notebook is provided in the repo [here](geo_env.yml). It is the same environment used for Data Processing notebook.
 
